@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyberpunk-background text-cyberpunk-secondary font-mono;
+  }
+
+  body.light {
+    background-color: white;
+    color: black;
+  }
+
+  body.dark {
+    background-color: #0f0f0f;
+    color: #00fff7;
+  }
+}
