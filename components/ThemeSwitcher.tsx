@@ -7,7 +7,6 @@ export default function ThemeSwitcher() {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    // Only run after client has mounted
     const storedTheme = localStorage.getItem('theme') || 'light'
     setTheme(storedTheme)
     setIsMounted(true)
@@ -24,7 +23,7 @@ export default function ThemeSwitcher() {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
 
-  if (!isMounted) return null // Optional: prevent SSR mismatch
+  if (!isMounted) return null 
 
   return (
     <button
