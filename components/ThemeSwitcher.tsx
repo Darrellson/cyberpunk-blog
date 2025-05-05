@@ -1,33 +1,28 @@
 'use client'
-
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState<string>('light')
-  const [isMounted, setIsMounted] = useState(false)
+  const [theme, setTheme] = useState('light')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') || 'light'
-    setTheme(storedTheme)
-    setIsMounted(true)
+    const stored = localStorage.getItem('theme') || 'light'
+    setTheme(stored)
+    setMounted(true)
   }, [])
 
   useEffect(() => {
-    if (!isMounted) return
+    if (!mounted) return
     document.body.classList.remove('light', 'dark')
     document.body.classList.add(theme)
     localStorage.setItem('theme', theme)
-  }, [theme, isMounted])
+  }, [theme, mounted])
 
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
-  }
-
-  if (!isMounted) return null 
+  if (!mounted) return null
 
   return (
     <button
-      onClick={toggleTheme}
+      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       className="py-2 px-4 rounded-lg bg-cyberpunk-accent text-white font-semibold hover:bg-cyberpunk-button-hover-bg transition-all"
     >
       Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode

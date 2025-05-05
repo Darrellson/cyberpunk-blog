@@ -4,5 +4,5 @@ export default function Article() {
       <h2 className="text-xl text-cyberpunk-primary">Welcome to the Cyber Blog</h2>
       <p>This is a short article about living in the neon dream of cyberspace.</p>
     </article>
-  );
+  )
 }
