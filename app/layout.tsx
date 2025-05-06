@@ -1,15 +1,16 @@
 'use client'
+
 import '@/styles/globals.css'
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState('dark')
+  const [theme, setTheme] = useState('cyberpunk')
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme') || 'dark'
+    const stored = localStorage.getItem('theme') || 'cyberpunk'
     setTheme(stored)
-    document.body.classList.remove('light', 'dark')
+    document.body.classList.remove('light', 'dark', 'cyberpunk')
     document.body.classList.add(stored)
   }, [])
 

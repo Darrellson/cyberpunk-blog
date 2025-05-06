@@ -1,5 +1,7 @@
 'use client'
+
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export default function JokeMicroblog() {
   const [joke, setJoke] = useState('')
@@ -11,7 +13,7 @@ export default function JokeMicroblog() {
       const res = await fetch('/api/joke')
       const data = await res.json()
       setJoke(data.joke)
-    } catch (error) {
+    } catch {
       setJoke('Failed to load joke.')
     } finally {
       setLoading(false)
@@ -23,7 +25,10 @@ export default function JokeMicroblog() {
   }, [])
 
   return (
-    <div className="p-4 border border-cyberpunk-secondary rounded-xl bg-white dark:bg-black text-black dark:text-white mt-6">
+    <motion.div
+      className="p-4 border border-cyberpunk-secondary rounded-xl bg-white dark:bg-black text-black dark:text-white mt-6"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}
+    >
       <h3 className="text-lg font-bold text-cyberpunk-primary">Microblog Joke</h3>
       <p className="mt-2 text-sm">{loading ? 'Loading joke...' : joke}</p>
       <button
@@ -33,6 +38,6 @@ export default function JokeMicroblog() {
       >
         {loading ? 'Loading...' : 'New Joke'}
       </button>
-    </div>
+    </motion.div>
   )
 }
