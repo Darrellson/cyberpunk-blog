@@ -1,5 +1,7 @@
 'use client'
+
 import { useEffect, useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 export default function ThemeSwitcher() {
   const [theme, setTheme] = useState('light')
@@ -21,11 +23,11 @@ export default function ThemeSwitcher() {
   if (!mounted) return null
 
   return (
-    <button
+    <Button
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      className="py-2 px-4 rounded-lg bg-cyberpunk-accent text-white font-semibold hover:bg-cyberpunk-button-hover-bg transition-all"
+      className="bg-cyberpunk-accent text-white hover:bg-cyberpunk-button-hover-bg"
     >
       Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
-    </button>
+    </Button>
   )
 }
