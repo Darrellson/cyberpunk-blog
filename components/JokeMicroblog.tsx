@@ -11,7 +11,7 @@ export default function JokeMicroblog() {
   }, [])
 
   return (
-    <div className="p-4 border border-cyberpunk-secondary rounded-xl bg-black">
+    <div className="p-4 border border-cyberpunk-secondary rounded-xl bg-black dark:bg-black light:bg-white text-black dark:text-white">
       <h3 className="text-lg font-bold">Microblog Joke</h3>
       <p className="mt-2 text-sm">{joke}</p>
     </div>

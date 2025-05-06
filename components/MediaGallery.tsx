@@ -6,13 +6,23 @@ export default function MediaGallery() {
         alt="Cyberpunk Scene"
         className="rounded-xl"
       />
-
       <video controls className="rounded-xl">
         <source
           src="https://www.w3schools.com/html/mov_bbb.mp4"
           type="video/mp4"
         />
       </video>
+      <img
+        src="https://cdna.artstation.com/p/assets/images/images/051/428/308/large/kate-fox-cyberpunk-female.jpg"
+        alt="Augmented Human"
+        className="rounded-xl"
+      />
+      <video controls className="rounded-xl">
+        <source
+          src="https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
+          type="video/mp4"
+        />
+      </video>
     </div>
-  );
+  )
 }
