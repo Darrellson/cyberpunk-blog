@@ -1,30 +1,14 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useTheme } from '@/context/ThemeContext'
 import { Button } from '@/components/ui/button'
 
-const themes = ['light', 'dark', 'cyberpunk'] as const
+const themes = ['light', 'dark', 'cyberpunk', 'retro', 'neon'] as const
 
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState('cyberpunk')
-  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme } = useTheme()
 
-  useEffect(() => {
-    const stored = localStorage.getItem('theme') || 'cyberpunk'
-    setTheme(stored)
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-    document.body.classList.remove('light', 'dark', 'cyberpunk')
-    document.body.classList.add(theme)
-    localStorage.setItem('theme', theme)
-  }, [theme, mounted])
-
-  if (!mounted) return null
-
-  const nextTheme = themes[(themes.indexOf(theme as any) + 1) % themes.length]
+  const nextTheme = themes[(themes.indexOf(theme) + 1) % themes.length]
 
   return (
     <Button

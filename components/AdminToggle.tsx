@@ -1,38 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useTheme } from '@/context/ThemeContext'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const themes = ['light', 'dark', 'cyberpunk', 'retro', 'neon']
 
 export default function AdminPanel() {
-  const [theme, setTheme] = useState('dark')
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    const stored = localStorage.getItem('theme') || 'dark'
-    setTheme(stored)
-    document.body.classList.remove('light', 'dark', 'cyberpunk', 'retro', 'neon')
-    document.body.classList.add(stored)
-    setMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-    document.body.classList.remove('light', 'dark', 'cyberpunk', 'retro', 'neon')
-    document.body.classList.add(theme)
-    localStorage.setItem('theme', theme)
-  }, [theme, mounted])
-
-  const resetTheme = () => {
-    setTheme('dark')
-    localStorage.removeItem('theme')
-  }
-
-  if (!mounted) return null
+  const { theme, setTheme, resetTheme } = useTheme()
 
   return (
     <motion.div

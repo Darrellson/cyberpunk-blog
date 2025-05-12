@@ -2,22 +2,15 @@
 
 import '@/styles/globals.css'
 import type { ReactNode } from 'react'
-import { useEffect, useState } from 'react'
+import { ThemeProvider } from '@/context/ThemeContext'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState('cyberpunk')
-
-  useEffect(() => {
-    const stored = localStorage.getItem('theme') || 'cyberpunk'
-    setTheme(stored)
-    document.body.classList.remove('light', 'dark', 'cyberpunk')
-    document.body.classList.add(stored)
-  }, [])
-
   return (
     <html lang="en">
-      <body className={`${theme} bg-cyberpunk-background text-white`}>
-        <main className="max-w-4xl mx-auto p-6">{children}</main>
+      <body className="bg-cyberpunk-background text-white">
+        <ThemeProvider>
+          <main className="max-w-4xl mx-auto p-6">{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   )
