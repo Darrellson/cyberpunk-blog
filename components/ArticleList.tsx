@@ -19,12 +19,8 @@ export default function ArticleList() {
       fetchArticles()
     }
 
-    // Listen to 'article-created' event
     window.addEventListener('article-created', handleArticleCreated)
-
-    return () => {
-      window.removeEventListener('article-created', handleArticleCreated)
-    }
+    return () => window.removeEventListener('article-created', handleArticleCreated)
   }, [])
 
   const handleDelete = async (id: number) => {
@@ -33,7 +29,7 @@ export default function ArticleList() {
     })
     const data = await response.json()
     console.log('Deleted article:', data)
-    fetchArticles() // Refresh after delete
+    fetchArticles()
   }
 
   return (
