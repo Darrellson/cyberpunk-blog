@@ -3,7 +3,7 @@ import JokeMicroblog from '@/components/JokeMicroblog'
 import MediaGallery from '@/components/MediaGallery'
 import AdminToggle from '@/components/AdminToggle'
 
-export const revalidate = 60; 
+export const revalidate = 60
 
 export default function HomePage() {
   return (
@@ -14,5 +14,5 @@ export default function HomePage() {
       <JokeMicroblog />
       <AdminToggle />
     </>
-  );
+  )
 }

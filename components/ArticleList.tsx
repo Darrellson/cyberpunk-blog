@@ -4,46 +4,43 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 
 export default function ArticleList() {
-  const [articles, setArticles] = useState([])
+  const [articles, setArticles] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
   const fetchArticles = async () => {
-    const response = await fetch('/api/articles')
-    const data = await response.json()
+    setLoading(true)
+    const res = await fetch('/api/articles')
+    const data = await res.json()
     setArticles(data)
+    setLoading(false)
+  }
+
+  const handleDelete = async (id: number) => {
+    await fetch(`/api/articles/${id}`, { method: 'DELETE' })
+    fetchArticles()
   }
 
   useEffect(() => {
     fetchArticles()
-
-    const handleArticleCreated = () => {
-      fetchArticles()
-    }
-
-    window.addEventListener('article-created', handleArticleCreated)
-    return () => window.removeEventListener('article-created', handleArticleCreated)
+    const refresh = () => fetchArticles()
+    window.addEventListener('article-created', refresh)
+    return () => window.removeEventListener('article-created', refresh)
   }, [])
 
-  const handleDelete = async (id: number) => {
-    const response = await fetch(`/api/articles/${id}`, {
-      method: 'DELETE',
-    })
-    const data = await response.json()
-    console.log('Deleted article:', data)
-    fetchArticles()
-  }
-
   return (
-    <div className="my-6">
-      <h2 className="text-xl">Articles</h2>
-      <div>
-        {articles.map((article: any) => (
-          <div key={article.id} className="mb-4 p-4 border border-gray-300">
-            <h3>{article.title}</h3>
-            <p>{article.content}</p>
-            <Button onClick={() => handleDelete(article.id)}>Delete</Button>
+    <div className="mt-6">
+      <h2 className="text-xl mb-4">Articles</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        articles.map((a) => (
+          <div key={a.id} className="mb-4 p-4 border border-gray-300 rounded">
+            <h3 className="font-bold">{a.title}</h3>
+            <p>{a.content}</p>
+            <Button className="mt-2" onClick={() => handleDelete(a.id)}>Delete</Button>
           </div>
-        ))}
-      </div>
+        ))
+      )}
     </div>
   )
 }
