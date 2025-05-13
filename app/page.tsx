@@ -2,6 +2,7 @@ import Article from '@/components/Article'
 import JokeMicroblog from '@/components/JokeMicroblog'
 import MediaGallery from '@/components/MediaGallery'
 import AdminToggle from '@/components/AdminToggle'
+import ArticleList from '@/components/ArticleList'
 
 export const revalidate = 60
 
@@ -13,6 +14,7 @@ export default function HomePage() {
       <MediaGallery />
       <JokeMicroblog />
       <AdminToggle />
+      <ArticleList />
     </>
   )
 }

@@ -21,9 +21,7 @@ export default function AdminPanel() {
 
     const response = await fetch('/api/articles', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, content }),
     })
 
@@ -34,24 +32,14 @@ export default function AdminPanel() {
       setContent('')
       setShowForm(false)
 
-      // Dispatch event to update the article list
+      // Dispatch custom event
       window.dispatchEvent(new Event('article-created'))
     } else {
       alert(`Error: ${data.error}`)
     }
   }
 
-  const themes: ('light' | 'dark' | 'cyberpunk' | 'retro' | 'neon')[] = [
-    'light',
-    'dark',
-    'cyberpunk',
-    'retro',
-    'neon',
-  ]
-
-  const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTheme(e.target.value as typeof theme)
-  }
+  const themes = ['light', 'dark', 'cyberpunk', 'retro', 'neon'] as const
 
   return (
     <motion.div
@@ -67,13 +55,11 @@ export default function AdminPanel() {
         <div className="flex gap-4">
           <select
             value={theme}
-            onChange={handleThemeChange}
+            onChange={(e) => setTheme(e.target.value as typeof theme)}
             className="bg-cyberpunk-accent border-cyberpunk-primary text-white py-2 px-4 rounded-lg shadow-lg"
           >
             {themes.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
+              <option key={t} value={t}>{t}</option>
             ))}
           </select>
 
@@ -108,10 +94,7 @@ export default function AdminPanel() {
             onChange={(e) => setContent(e.target.value)}
             className="mb-4"
           />
-          <Button
-            onClick={handleCreate}
-            className="bg-cyberpunk-primary text-white"
-          >
+          <Button onClick={handleCreate} className="bg-cyberpunk-primary text-white">
             Create Article
           </Button>
         </div>
