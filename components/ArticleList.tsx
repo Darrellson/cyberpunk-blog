@@ -1,17 +1,30 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 
 export default function ArticleList() {
   const [articles, setArticles] = useState([])
 
+  const fetchArticles = async () => {
+    const response = await fetch('/api/articles')
+    const data = await response.json()
+    setArticles(data)
+  }
+
   useEffect(() => {
-    const fetchArticles = async () => {
-      const response = await fetch('/api/articles')
-      const data = await response.json()
-      setArticles(data)
+    fetchArticles()
+
+    const handleArticleCreated = () => {
+      fetchArticles()
     }
 
-    fetchArticles()
+    // Listen to 'article-created' event
+    window.addEventListener('article-created', handleArticleCreated)
+
+    return () => {
+      window.removeEventListener('article-created', handleArticleCreated)
+    }
   }, [])
 
   const handleDelete = async (id: number) => {
@@ -20,6 +33,7 @@ export default function ArticleList() {
     })
     const data = await response.json()
     console.log('Deleted article:', data)
+    fetchArticles() // Refresh after delete
   }
 
   return (
