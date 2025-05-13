@@ -56,7 +56,7 @@ export default function AdminPanel() {
           <select
             value={theme}
             onChange={(e) => setTheme(e.target.value as typeof theme)}
-            className="bg-cyberpunk-accent border-cyberpunk-primary text-white py-2 px-4 rounded-lg shadow-lg"
+            className="bg-cyberpunk-accent border-cyberpunk-primary  text-black py-2 px-4 rounded-lg shadow-lg"
           >
             {themes.map((t) => (
               <option key={t} value={t}>{t}</option>
