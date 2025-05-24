@@ -1,6 +1,8 @@
 'use client'
 
 import '@/styles/globals.css'
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
 import type { ReactNode } from 'react'
 import { ThemeProvider } from '@/context/ThemeContext'
 

@@ -7,12 +7,13 @@ import { Input } from '@/components/ui/input'
 import { useTheme } from '@/context/ThemeContext'
 import { motion } from 'framer-motion'
 
+// Load MDEditor dynamically to avoid SSR issues
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 export default function AdminPanel() {
   const { theme, setTheme, resetTheme } = useTheme()
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState<string | undefined>('') // updated
   const [showForm, setShowForm] = useState(false)
 
   const handleCreate = async () => {
@@ -64,8 +65,18 @@ export default function AdminPanel() {
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
-          <Button onClick={resetTheme}>Reset</Button>
-          <Button onClick={() => setShowForm((prev) => !prev)}>
+
+          <Button
+            onClick={resetTheme}
+            className="bg-cyberpunk-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-cyberpunk-secondary transition-all"
+          >
+            Reset to Default
+          </Button>
+
+          <Button
+            onClick={() => setShowForm((prev) => !prev)}
+            className="bg-cyberpunk-secondary text-white py-2 px-4 rounded-lg shadow-md hover:bg-cyberpunk-accent transition-all"
+          >
             {showForm ? 'Cancel' : 'New Article'}
           </Button>
         </div>
@@ -80,9 +91,11 @@ export default function AdminPanel() {
             onChange={(e) => setTitle(e.target.value)}
             className="mb-4"
           />
-          <div className="mb-4">
-            <MDEditor value={content} onChange={(val) => setContent(val || '')} />
+
+          <div data-color-mode="light" className="mb-4">
+            <MDEditor value={content} onChange={setContent} height={300} />
           </div>
+
           <Button onClick={handleCreate} className="bg-cyberpunk-primary text-white">
             Create Article
           </Button>
