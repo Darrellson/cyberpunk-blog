@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { useTheme } from '@/context/ThemeContext'
 import { motion } from 'framer-motion'
+
+const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 export default function AdminPanel() {
   const { theme, setTheme, resetTheme } = useTheme()
@@ -27,15 +29,12 @@ export default function AdminPanel() {
 
     await fetch(`/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_SECRET}`)
 
-
     const data = await response.json()
     if (response.ok) {
       alert('Article created successfully!')
       setTitle('')
       setContent('')
       setShowForm(false)
-
-      // Dispatch custom event
       window.dispatchEvent(new Event('article-created'))
     } else {
       alert(`Error: ${data.error}`)
@@ -59,24 +58,14 @@ export default function AdminPanel() {
           <select
             value={theme}
             onChange={(e) => setTheme(e.target.value as typeof theme)}
-            className="bg-cyberpunk-accent border-cyberpunk-primary  text-black py-2 px-4 rounded-lg shadow-lg"
+            className="bg-cyberpunk-accent border-cyberpunk-primary text-black py-2 px-4 rounded-lg shadow-lg"
           >
             {themes.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
-
-          <Button
-            onClick={resetTheme}
-            className="bg-cyberpunk-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-cyberpunk-secondary transition-all"
-          >
-            Reset to Default
-          </Button>
-
-          <Button
-            onClick={() => setShowForm((prev) => !prev)}
-            className="bg-cyberpunk-secondary text-white py-2 px-4 rounded-lg shadow-md hover:bg-cyberpunk-accent transition-all"
-          >
+          <Button onClick={resetTheme}>Reset</Button>
+          <Button onClick={() => setShowForm((prev) => !prev)}>
             {showForm ? 'Cancel' : 'New Article'}
           </Button>
         </div>
@@ -91,12 +80,9 @@ export default function AdminPanel() {
             onChange={(e) => setTitle(e.target.value)}
             className="mb-4"
           />
-          <Textarea
-            placeholder="Content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="mb-4"
-          />
+          <div className="mb-4">
+            <MDEditor value={content} onChange={(val) => setContent(val || '')} />
+          </div>
           <Button onClick={handleCreate} className="bg-cyberpunk-primary text-white">
             Create Article
           </Button>
