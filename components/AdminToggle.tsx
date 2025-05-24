@@ -80,7 +80,7 @@ export default function AdminPanel() {
               value={title}
               onChange={setTitle}
               preview="edit"
-              height={100}
+              height={300} // same as content for consistent editing area height
             />
           </div>
 
@@ -90,6 +90,7 @@ export default function AdminPanel() {
               value={content}
               onChange={setContent}
               height={300}
+              preview="edit"
             />
           </div>
 
