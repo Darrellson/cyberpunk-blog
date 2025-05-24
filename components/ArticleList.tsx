@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
-import ReactMarkdown from 'react-markdown'
-import { X } from 'lucide-react' // optional icon for close
+
+const MarkdownPreview = dynamic(() => import('@uiw/react-markdown-preview'), { ssr: false })
 
 type Article = {
   id: number
@@ -13,7 +14,7 @@ type Article = {
 
 export default function ArticleList() {
   const [articles, setArticles] = useState<Article[]>([])
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
+  const [selected, setSelected] = useState<Article | null>(null)
 
   const fetchArticles = async () => {
     const res = await fetch('/api/articles')
@@ -21,47 +22,48 @@ export default function ArticleList() {
     setArticles(data)
   }
 
+  useEffect(() => {
+    fetchArticles()
+    const handler = () => fetchArticles()
+    window.addEventListener('article-created', handler)
+    return () => window.removeEventListener('article-created', handler)
+  }, [])
+
   const handleDelete = async (id: number) => {
     await fetch(`/api/articles/${id}`, { method: 'DELETE' })
     await fetch(`/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_SECRET}`)
     fetchArticles()
   }
 
-  useEffect(() => {
-    fetchArticles()
-    window.addEventListener('article-created', fetchArticles)
-    return () => window.removeEventListener('article-created', fetchArticles)
-  }, [])
-
   return (
-    <div className="relative">
-      <h2 className="text-xl mb-4">Articles</h2>
+    <div className="mt-8">
+      <h2 className="text-xl font-bold mb-4">Articles</h2>
       {articles.map((a) => (
-        <div key={a.id} className="mb-4 p-4 border border-gray-300 rounded bg-white shadow">
-          <h3
-            className="font-bold cursor-pointer hover:text-cyberpunk-accent text-lg"
-            onClick={() => setSelectedArticle(a)}
+        <div key={a.id} className="mb-4 p-4 border rounded bg-white">
+          <button
+            onClick={() => setSelected(a)}
+            className="text-left w-full hover:underline text-lg font-semibold"
           >
             {a.title}
-          </h3>
-          <Button className="mt-2" onClick={() => handleDelete(a.id)}>
+          </button>
+          <Button onClick={() => handleDelete(a.id)} className="mt-2">
             Delete
           </Button>
         </div>
       ))}
 
-      {/* Fullscreen Preview */}
-      {selectedArticle && (
-        <div className="fixed inset-0 z-50 bg-white p-8 overflow-y-auto shadow-lg rounded-lg">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-bold">{selectedArticle.title}</h2>
-            <Button variant="ghost" onClick={() => setSelectedArticle(null)}>
-              <X className="w-6 h-6" />
-            </Button>
+      {selected && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+          <div className="w-[90%] max-w-3xl max-h-[90vh] bg-white p-6 rounded-lg shadow-lg overflow-y-auto relative z-50">
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute top-2 right-3 text-red-500 hover:text-red-700 text-lg font-bold"
+            >
+              ✕
+            </button>
+            <h2 className="text-2xl font-bold mb-2">{selected.title}</h2>
+            <MarkdownPreview source={selected.content} />
           </div>
-          <article className="prose max-w-full">
-            <ReactMarkdown>{selectedArticle.content}</ReactMarkdown>
-          </article>
         </div>
       )}
     </div>

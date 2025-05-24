@@ -3,17 +3,15 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { useTheme } from '@/context/ThemeContext'
 import { motion } from 'framer-motion'
 
-// Load MDEditor dynamically to avoid SSR issues
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 export default function AdminPanel() {
   const { theme, setTheme, resetTheme } = useTheme()
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState<string | undefined>('') // updated
+  const [title, setTitle] = useState<string | undefined>('')
+  const [content, setContent] = useState<string | undefined>('')
   const [showForm, setShowForm] = useState(false)
 
   const handleCreate = async () => {
@@ -29,8 +27,8 @@ export default function AdminPanel() {
     })
 
     await fetch(`/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_SECRET}`)
-
     const data = await response.json()
+
     if (response.ok) {
       alert('Article created successfully!')
       setTitle('')
@@ -65,35 +63,34 @@ export default function AdminPanel() {
               <option key={t} value={t}>{t}</option>
             ))}
           </select>
-
-          <Button
-            onClick={resetTheme}
-            className="bg-cyberpunk-primary text-white py-2 px-4 rounded-lg shadow-md hover:bg-cyberpunk-secondary transition-all"
-          >
-            Reset to Default
-          </Button>
-
-          <Button
-            onClick={() => setShowForm((prev) => !prev)}
-            className="bg-cyberpunk-secondary text-white py-2 px-4 rounded-lg shadow-md hover:bg-cyberpunk-accent transition-all"
-          >
+          <Button onClick={resetTheme}>Reset</Button>
+          <Button onClick={() => setShowForm((prev) => !prev)}>
             {showForm ? 'Cancel' : 'New Article'}
           </Button>
         </div>
       </div>
 
       {showForm && (
-        <div className="mt-8 p-6 bg-white rounded-lg shadow-lg">
-          <h2 className="text-2xl font-semibold mb-4">Create New Article</h2>
-          <Input
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mb-4"
-          />
+        <div className="mt-6 p-6 bg-white rounded-lg shadow-lg">
+          <h2 className="text-xl font-semibold mb-4">Create New Article</h2>
 
-          <div data-color-mode="light" className="mb-4">
-            <MDEditor value={content} onChange={setContent} height={300} />
+          <div className="mb-4">
+            <label className="font-semibold mb-1 block">Title</label>
+            <MDEditor
+              value={title}
+              onChange={setTitle}
+              preview="edit"
+              height={100}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="font-semibold mb-1 block">Content</label>
+            <MDEditor
+              value={content}
+              onChange={setContent}
+              height={300}
+            />
           </div>
 
           <Button onClick={handleCreate} className="bg-cyberpunk-primary text-white">

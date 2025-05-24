@@ -11,6 +11,7 @@ module.exports = {
 		  'cyberpunk-background': '#0f0f0f',
 		  'cyberpunk-primary': '#ff00cc',
 		  'cyberpunk-secondary': '#00fff7',
+		  'cyberpunk-card': '#3a2a1a',
 		  'neon-background': '#1b1b1b', // New Neon background
 		  'neon-primary': '#3ef7e1',     // Neon accents
 		  'neon-secondary': '#ff00ff',   // Neon pink accents
