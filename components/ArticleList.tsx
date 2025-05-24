@@ -31,6 +31,7 @@ export default function ArticleList() {
 
   const handleDelete = async (id: number) => {
     await fetch(`/api/articles/${id}`, { method: 'DELETE' })
+    await fetch(`/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_SECRET}`)
     fetchArticles()
   }
 

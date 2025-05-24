@@ -4,7 +4,6 @@ import MediaGallery from '@/components/MediaGallery'
 import AdminToggle from '@/components/AdminToggle'
 import ArticleList from '@/components/ArticleList'
 
-export const revalidate = 60
 
 export default function HomePage() {
   return (

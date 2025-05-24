@@ -25,6 +25,9 @@ export default function AdminPanel() {
       body: JSON.stringify({ title, content }),
     })
 
+    await fetch(`/api/revalidate?secret=${process.env.NEXT_PUBLIC_REVALIDATE_SECRET}`)
+
+
     const data = await response.json()
     if (response.ok) {
       alert('Article created successfully!')
